@@ -1,3 +1,23 @@
+<div id="map_options">
+  <form>
+    Start: <input type="text" name="start" id="start" autocomplete="on" value="Chicago, IL"/>
+    End: <input type="text" name="end" id="end" autocomplete="on" value="New York, NY"/>
+    <br>Where in your route would you like to stop? 
+    <select>
+      <option value="25">1/4</option>
+      <option value="50">1/2</option>
+      <option value="75">3/4</option>
+    </select>
+    <br>How far away from your route would you like to deviate?
+    <select>
+      <option value="1">1</option>
+      <option value="5">5</option>
+      <option value="10">10</option>
+    </select> miles
+    <br><input type="submit" id="map_options_submit">
+  </form>
+</div>
+
   <div style='width: 800px;'>
     <div id="directions" style='width: 800px; height: 400px;'></div>
   </div>
