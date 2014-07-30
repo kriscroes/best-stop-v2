@@ -37,6 +37,9 @@ gem 'spring',        group: :development
 #gem rails google maps
 gem 'gmaps4rails'
 
+#gem yelp API
+gem 'yelp'
+
 group :test, :development do
   gem "rspec-rails"
   gem "capybara"
