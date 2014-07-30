@@ -15,5 +15,6 @@
 //= require bootstrap
 //= require underscore
 //= require gmaps/google
+//= require v3_epoly
 //= require map
 //= require_tree .
