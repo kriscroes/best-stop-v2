@@ -3,23 +3,43 @@
   // var $stopPoint;
   var stopPointLat,
       stopPointLon;
+//       consumer_key = 'h6izpzzte-6P3SeJ3uluZg',
+//       consumer_secret = 'Ks7ZLrcurboT8GidbkMT4oDBwoM',
+//       token = 'F-EgdJc44BZhoq3FcwsrMDFGdJHL7aUg',
+//       token_secret = 'N5d15VGLriVUkO3n1DbSp59O8gY',
+//       URL = "http://api.yelp.com/v2/search?term=food&amp;cll="+stopPointLat+","+stopPointLon+"&consumer_key="+consumer_key+"&consumer_secret="+consumer_secret+"&token="+token+"&token_secret="+token_secret;
+
+// function yelpCall(){
+//   $.ajax({
+//     url: URL,
+//     dataType: 'json',
+//     success: function(json){
+//       console.log(json);
+//     },
+//     error: function(e){
+//       console.log(e.message);
+//     }
+//   })
+// }
 
 function initialize() {
-
   calcRoute();
-
   $("#map_options").submit(function(event) {
     event.preventDefault();
   
-
     calcRoute();
     // getStopPoint($stopPoint);
-    var marker = handler.addMarker({
-    lat: stopPointLat,
-    lng: stopPointLon
+    var marker = null;
+    marker = handler.addMarker({
+      lat: stopPointLat,
+      lng: stopPointLon
     });
-    marker = null
+    
+    //make yelp request
+    //print results to the screen
     console.log(stopPointLat);
+    console.log(stopPointLon);
+    yelpCall();
   })
 
 
@@ -35,8 +55,6 @@ function initialize() {
   function displayOnMap(){
     // handler.map.centerOn(marker);
   };
-
-
 }
 
 function calcRoute() {
@@ -50,7 +68,7 @@ function calcRoute() {
       travelMode:  google.maps.TravelMode.DRIVING,
   };
   directionsService.route(request, function(response, status) {
-    console.log(response);
+    //console.log(response);
     if (status == google.maps.DirectionsStatus.OK) {
       directionsDisplay.setDirections(response);
       var $stopPoint = parseInt($("#stop_point").val());
