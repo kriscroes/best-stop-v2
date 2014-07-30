@@ -39,7 +39,6 @@ function initialize() {
     //print results to the screen
     console.log(stopPointLat);
     console.log(stopPointLon);
-    yelpCall();
   })
 
 
