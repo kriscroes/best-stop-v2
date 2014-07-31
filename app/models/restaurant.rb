@@ -12,7 +12,7 @@ class Restaurant < ActiveRecord::Base
     search.businesses.each do |restaurant|
       restaurant_name = restaurant.name
       restaurant_image = restaurant.image_url
-      restaurant_address = restaurant.location.display_address.join(",")
+      restaurant_address = restaurant.location.display_address.join(", ")
       restaurant_rating = restaurant.rating
       restaurant_rating_img = restaurant.rating_img_url_small
       restaurant_url = restaurant.url
