@@ -3,6 +3,7 @@ class RestaurantsController < ApplicationController
 
   def yelp_search
     #destroy_all_persisted information for every request
+    #binding.pry
     Restaurant.destroy_all
 
     lat = params[:lat]
