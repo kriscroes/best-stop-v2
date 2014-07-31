@@ -1,5 +1,7 @@
   <div id="restaurants" style='height: 400px;'>
-    <% if @restaurants %>
+    <% if @restaurants.empty? %>
+      <p>There are no restaurants fitting your search criteria. Please widen your search.</p>
+    <% else %>
       <% @restaurants.each do |restaurant| %>
         <%= image_tag restaurant.image_url %>
         <p><strong><%= restaurant.name %></strong><p>
@@ -9,5 +11,6 @@
         <p><%= restaurant.distance %> miles </p>
         <p><%= link_to restaurant.url %></p>
       <% end %>
+    
     <% end %>
   </div>

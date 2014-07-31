@@ -2,9 +2,13 @@
 * ~~Generate rails app~~
 * ~~API key~~
 * ~~Google directions~~
-* Find the halfway point (marker.getPosition() use this to start our Yelp search)
-* Show restaurants near halfway point
-* Form for stopping point (halfway, 3 hours in, etc.) and Maximum Trip Deviation
+* ~~Find the halfway point (marker.getPosition() use this to start our Yelp search)~~
+* ~~Show restaurants near halfway point~~
+* ~~Form for stopping point (halfway, 3 hours in, etc.) and Maximum Trip Deviation~~
+* Implement MTD
+* Allow user to chose quick or nice
+* Map restaurants near stopping point
+* Show route to/from chosen restaurant
 * Bootstrap styles
 
 ##Next Steps:
