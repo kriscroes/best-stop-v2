@@ -36,14 +36,14 @@ $(function(){
         if (check_done === "done"){
         console.log("done!");
           $.ajax({
-             url:'/restaurants/yelp_search', //Defined in your routes file
+             url:'/restaurants/yelp_search', 
              type: 'POST',
              data:(
                'lat=' + stopPointLat + '&' +
                'lon=' + stopPointLon
              )
           });
-        }else{
+        } else {
           console.log("Are ya done yet???");
           setTimeout(check, 1000);
         }

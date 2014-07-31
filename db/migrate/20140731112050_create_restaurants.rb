@@ -7,7 +7,7 @@ class CreateRestaurants < ActiveRecord::Migration
       t.string :url
       t.string :rating
       t.string :rating_img_url
-      t.float :distance
+      t.float  :distance
 
       t.timestamps
     end
