@@ -1,5 +1,3 @@
-<%= @food %>
-
 <div id="map_options">
   <form>
     Start: <input type="text" name="start" id="start" autocomplete="on" value="Chicago, IL"/>
@@ -17,14 +15,9 @@
       <option value="10">10</option>
     </select> miles
     <br><input type="submit" id="map_options_submit">
-    <input type="submit" action="/search" method="POST">
   </form>
 </div>
 
-  <div style='width: 60%; float:left;'>
+  <div style='width: 50%; float:left;'>
     <div id="directions" style='height: 400px;'></div>
-  </div>
-
-  <div id="yelp" style='width: 35%; float:right; background: yellow;'>
-    <div style='height: 400px;'></div>
   </div>
