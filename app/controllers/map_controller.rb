@@ -1,7 +1,6 @@
 class MapController < ApplicationController
 
   def index
-    @restaurants = Restaurant.all
   end
 
   # def calculate
