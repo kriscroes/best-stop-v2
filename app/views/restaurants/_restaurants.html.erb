@@ -1,0 +1,7 @@
+<% @foods.each do |food| %>
+  <tr>
+     <td><%= image_tag food.image_url %></td>
+     <td><%= food.name %></td>
+     <td><%= food.address %></td>
+  </tr>
+<% end %>
