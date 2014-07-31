@@ -1,7 +1,14 @@
-<% @foods.each do |food| %>
-  <tr>
-     <td><%= image_tag food.image_url %></td>
-     <td><%= food.name %></td>
-     <td><%= food.address %></td>
-  </tr>
-<% end %>
+<div id="yelp" style='width: 45%; float:right;'>
+  <div id="map" style='height: 400px;'>
+    <% if @restaurants %>
+      <% @restaurants.each do |restaurant| %>
+        <%= image_tag restaurant.image_url %>
+        <p><strong><%= restaurant.name %></strong><p>
+        <p>rating: <%= restaurant.rating %> 
+        <%= image_tag restaurant.rating_img_url %></p>
+        <p><%= restaurant.address %></p>
+        <p><%= restaurant.url %></p>
+      <% end %>
+    <% end %>
+  </div>
+</div>

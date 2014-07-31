@@ -1,4 +1,4 @@
-<h1>Listing foods</h1>
+<h1>Listing restaurants</h1>
 
 <table>
   <thead>
@@ -10,9 +10,9 @@
   <tbody>
     <% @foods.each do |food| %>
       <tr>
-         <td><%= image_tag food.image_url %></td>
-         <td><%= food.name %></td>
-         <td><%= food.address %></td>
+         <td><%= image_tag restaurant.image_url %></td>
+         <td><%= restaurant.name %></td>
+         <td><%= restaurant.address %></td>
       </tr>
     <% end %>
   </tbody>
