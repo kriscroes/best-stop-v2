@@ -7,7 +7,7 @@
         <p>rating: <%= restaurant.rating %> 
         <%= image_tag restaurant.rating_img_url %></p>
         <p><%= restaurant.address %></p>
-        <p><%= restaurant.url %></p>
+        <p><%= link_to restaurant.url %></p>
       <% end %>
     <% end %>
   </div>
