@@ -2,28 +2,41 @@
   var directionsService = new google.maps.DirectionsService();
   // var $stopPoint;
   var stopPointLat,
-      stopPointLon;
+      stopPointLon,
+      check_done;
 
 function initialize() {
   calcRoute();
+
   $("#map_options").submit(function(event) {
     event.preventDefault();
-  
+    check_done = "not done";
+    console.log("event listener clicked: "+check_done);
+
     calcRoute();
-    $.ajax({
-       url:'/restaurants/yelp_search', //Defined in your routes file
-       type: 'POST',
-       data:(
-         'lat=' + stopPointLat + '&' +
-         'lon=' + stopPointLon
-       ),
-       // success: function(response){
-       //  console.log(response);
-       // },
-       failure: function(){
-        alert("failure");
-       }
-    })
+    check();
+    function check(){
+      if (check_done === "done"){
+        console.log("done!");
+        $.ajax({
+           url:'/restaurants/yelp_search', //Defined in your routes file
+           type: 'POST',
+           data:(
+             'lat=' + stopPointLat + '&' +
+             'lon=' + stopPointLon
+           ),
+           // success: function(response){
+           //  console.log(response);
+           // },
+           failure: function(){
+            alert("failure");
+           }
+        })
+      }else{
+        console.log("Are ya done yet???");
+        setTimeout(check, 1000);
+      }
+    }
 
 
     // getStopPoint($stopPoint);
@@ -72,7 +85,6 @@ function calcRoute() {
       getStopPoint(response, $stopPoint);
     }
   });
-}
 
 function getStopPoint(response, percentage) {
   var totalDist = response.routes[0].legs[0].distance.value,
@@ -97,6 +109,9 @@ function getStopPoint(response, percentage) {
   var stopPointLatLonObject = polyline.GetPointAtDistance(distance);
     stopPointLat = stopPointLatLonObject["d"];
     stopPointLon = stopPointLatLonObject["e"];
+  check_done = "done";
+  console.log("check_done inside calcRoute: "+check_done);
+}
 }
 
 
