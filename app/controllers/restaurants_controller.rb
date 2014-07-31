@@ -1,12 +1,20 @@
 class RestaurantsController < ApplicationController
   before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
 
-  def index
+  def yelp_search
     #destroy_all_persisted information for every request
+    lat = params[:lat]
+    lon = params[:lon]
     Restaurant.destroy_all
-    Restaurant.get_yelp
 
+    Restaurant.get_yelp(lat, lon)
+
+    #redirect_to root_path
     @restaurants = Restaurant.all
+    # render 'restaurants'
+    # respond_to do |format|
+    #   format.js { render 'restaurants' } #make_a_change.js.erb
+    # end
   end
 
   private

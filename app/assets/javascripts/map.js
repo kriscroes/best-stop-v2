@@ -3,24 +3,6 @@
   // var $stopPoint;
   var stopPointLat,
       stopPointLon;
-//       consumer_key = 'h6izpzzte-6P3SeJ3uluZg',
-//       consumer_secret = 'Ks7ZLrcurboT8GidbkMT4oDBwoM',
-//       token = 'F-EgdJc44BZhoq3FcwsrMDFGdJHL7aUg',
-//       token_secret = 'N5d15VGLriVUkO3n1DbSp59O8gY',
-//       URL = "http://api.yelp.com/v2/search?term=food&amp;cll="+stopPointLat+","+stopPointLon+"&consumer_key="+consumer_key+"&consumer_secret="+consumer_secret+"&token="+token+"&token_secret="+token_secret;
-
-// function yelpCall(){
-//   $.ajax({
-//     url: URL,
-//     dataType: 'json',
-//     success: function(json){
-//       console.log(json);
-//     },
-//     error: function(e){
-//       console.log(e.message);
-//     }
-//   })
-// }
 
 function initialize() {
   calcRoute();
@@ -28,20 +10,35 @@ function initialize() {
     event.preventDefault();
   
     calcRoute();
+    $.ajax({
+       url:'/restaurants/yelp_search', //Defined in your routes file
+       type: 'POST',
+       data:(
+         'lat=' + stopPointLat + '&' +
+         'lon=' + stopPointLon
+       ),
+       // success: function(response){
+       //  console.log(response);
+       // },
+       failure: function(){
+        alert("failure");
+       }
+    })
+
+
     // getStopPoint($stopPoint);
-    var marker = null;
-    marker = handler.addMarker({
-      lat: stopPointLat,
-      lng: stopPointLon
-    });
-    
+    // var marker = null;
+    // marker = handler.addMarker({
+    //   lat: stopPointLat,
+    //   lng: stopPointLon
+    // });
+    //window.open("localhost:3000//restaurants/create?lat="+stopPointLat+"&lon="+stopPointLon,"_self")
+
     //make yelp request
     //print results to the screen
     console.log(stopPointLat);
     console.log(stopPointLon);
-    yelpCall();
   })
-
 
   var handler = Gmaps.build('Google');
   handler.buildMap({ internal: {id: 'directions'}}, function(){
@@ -60,7 +57,7 @@ function initialize() {
 function calcRoute() {
   var origin = $("#start").val(),
       destination = $("#end").val();
-  // var origin      = new google.maps.LatLng(41.850033, -87.6500523);
+  // var origin = new google.maps.LatLng(41.850033, -87.6500523);
   // var destination = new google.maps.LatLng(40.7055269, -74.014346);
   var request = {
       origin:      origin,
@@ -87,8 +84,7 @@ function getStopPoint(response, percentage) {
         strokeColor: '#FF0000',
         strokeWeight: 3
       });
-  var bounds = new google.maps.LatLngBounds();
-
+      var bounds = new google.maps.LatLngBounds();
       // polyline.setPath([]);
       var steps = response.routes[0].legs[0].steps;
       for (j=0; j<steps.length; j++) {
@@ -99,8 +95,12 @@ function getStopPoint(response, percentage) {
         }
       }
   var stopPointLatLonObject = polyline.GetPointAtDistance(distance);
-      stopPointLat = stopPointLatLonObject["d"];
-      stopPointLon = stopPointLatLonObject["e"];
+    stopPointLat = stopPointLatLonObject["d"];
+    stopPointLon = stopPointLatLonObject["e"];
+}
+
+
+google.maps.event.addDomListener(window, "load", initialize);
       // stopPointLatlng = new google.maps.LatLng(stopPointLat, stopPointLon);
 
       // console.log(stopPointLatLonObject);
@@ -112,16 +112,15 @@ function getStopPoint(response, percentage) {
       // marker.setMap(map);
       // console.log(marker);
        //this returns something like this google.maps.LatLng(41.850033, -87.6500523)  
-  // insert create marker code here using result of GetPointAtDistance
+      // insert create marker code here using result of GetPointAtDistance
 
-  // alert("Time:"+time+" totalTime:"+totalTime+" totalDist:"+totalDist+" dist:"+distance);
-  // if (!marker) {
-  //       marker = createMarker(polyline.GetPointAtDistance(distance),"time: "+time,"marker");
-  // } else {
-  //   marker.setPosition(polyline.GetPointAtDistance(distance));
-  //   marker.setTitle("time:"+time);
-  // }
-}
+      // alert("Time:"+time+" totalTime:"+totalTime+" totalDist:"+totalDist+" dist:"+distance);
+      // if (!marker) {
+      //       marker = createMarker(polyline.GetPointAtDistance(distance),"time: "+time,"marker");
+      // } else {
+      //   marker.setPosition(polyline.GetPointAtDistance(distance));
+      //   marker.setTitle("time:"+time);
+      // }
 
 
-google.maps.event.addDomListener(window, "load", initialize);
+

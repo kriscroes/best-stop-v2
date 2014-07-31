@@ -1,5 +1,4 @@
-<div id="yelp" style='width: 45%; float:right;'>
-  <div id="map" style='height: 400px;'>
+  <div id="restaurants" style='height: 400px;'>
     <% if @restaurants %>
       <% @restaurants.each do |restaurant| %>
         <%= image_tag restaurant.image_url %>
@@ -11,4 +10,3 @@
       <% end %>
     <% end %>
   </div>
-</div>
