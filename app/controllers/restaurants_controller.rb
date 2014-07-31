@@ -14,7 +14,6 @@ class RestaurantsController < ApplicationController
     Restaurant.get_yelp(lat, lon, type, sort, mtd)
 
     @restaurants = Restaurant.order("rating DESC")
-    #binding.pry
   end
 
   private
