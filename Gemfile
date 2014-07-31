@@ -35,7 +35,7 @@ gem 'spring',        group: :development
 # gem 'debugger', group: [:development, :test]
 
 #gem rails google maps
-gem 'gmaps4rails'
+# gem 'gmaps4rails'
 
 #gem yelp API
 gem 'yelp'

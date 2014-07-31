@@ -73,7 +73,6 @@ GEM
       faraday (>= 0.7.4, < 0.10)
     ffi (1.9.3)
     formatador (0.2.5)
-    gmaps4rails (2.1.2)
     google-analytics-rails (0.0.6)
     guard (2.6.1)
       formatador (>= 0.2.4)
@@ -234,7 +233,6 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   database_cleaner
   factory_girl_rails
-  gmaps4rails
   google-analytics-rails
   guard-rspec
   jbuilder (~> 2.0)
