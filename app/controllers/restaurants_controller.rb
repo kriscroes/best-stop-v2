@@ -3,15 +3,18 @@ class RestaurantsController < ApplicationController
 
   def yelp_search
     #destroy_all_persisted information for every request
-    #binding.pry
     Restaurant.destroy_all
 
+    type = params[:type]
+    sort = params[:sort].to_i
     lat = params[:lat]
     lon = params[:lon]
+    mtd = params[:mtd]
     
-    Restaurant.get_yelp(lat, lon)
+    Restaurant.get_yelp(lat, lon, type, sort, mtd)
 
-    @restaurants = Restaurant.all
+    @restaurants = Restaurant.order("rating DESC")
+    #binding.pry
   end
 
   private

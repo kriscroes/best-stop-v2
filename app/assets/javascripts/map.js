@@ -40,7 +40,10 @@ $(function(){
              type: 'POST',
              data:(
                'lat=' + stopPointLat + '&' +
-               'lon=' + stopPointLon
+               'lon=' + stopPointLon + '&' +
+               'type=' + $("#type").val() + '&' +
+               'sort=' + $("#sort").val() + '&' +
+               'mtd=' + $("#mtd").val()
              )
           });
         } else {
