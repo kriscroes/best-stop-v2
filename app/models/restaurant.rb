@@ -1,5 +1,8 @@
 class Restaurant < ActiveRecord::Base
-    
+
+geocoded_by :address
+after_validation :geocode, :if => :address_changed?
+
   def self.get_yelp(lat, lon, type, sort, mtd)
     #parameters to be passed in search, e.g. hardcoded flatiron latlon info
     coordinates = { latitude: lat, longitude: lon }
@@ -27,10 +30,19 @@ class Restaurant < ActiveRecord::Base
         restaurant_distance = (restaurant.distance * 0.00062137).round(2)
       rescue
         restaurant_distance = -1
+
       end
 
-      Restaurant.create(name: restaurant_name, address: restaurant_address, image_url: restaurant_image, rating: restaurant_rating, rating_img_url: restaurant_rating_img, url: restaurant_url, distance: restaurant_distance)
-    end
+ 
+    
+      Restaurant.create(name: restaurant_name,
+                       address: restaurant_address,
+                       image_url: restaurant_image,
+                       rating: restaurant_rating,
+                       rating_img_url: restaurant_rating_img, 
+                       url: restaurant_url, 
+                       distance: restaurant_distance)
+      end
 
   end
 
