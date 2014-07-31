@@ -1,0 +1,21 @@
+<h1>Listing foods</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @foods.each do |food| %>
+      <tr>
+         <td><%= image_tag food.image_url %></td>
+         <td><%= food.name %></td>
+         <td><%= food.address %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
