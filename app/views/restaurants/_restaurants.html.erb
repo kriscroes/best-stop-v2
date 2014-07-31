@@ -1,6 +1,6 @@
   <div id="restaurants" style='height: 400px;'>
     <% if @restaurants.empty? %>
-      <p>There are no restaurants fitting your search criteria. Please widen your search.</p>
+      <%= image_tag("jesse.jpg", :alt => "There are no restaurants fitting your search criteria. Please widen your search.") %>
     <% else %>
       <% @restaurants.each do |restaurant| %>
         <%= image_tag restaurant.image_url %>
