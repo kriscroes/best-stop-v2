@@ -8,7 +8,8 @@ class CreateRestaurants < ActiveRecord::Migration
       t.string :rating
       t.string :rating_img_url
       t.float  :distance
-
+      t.float  :latitude
+      t.float  :longitude
       t.timestamps
     end
   end
