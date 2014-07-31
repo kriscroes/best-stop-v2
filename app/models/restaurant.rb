@@ -17,7 +17,7 @@ class Restaurant < ActiveRecord::Base
       begin
         restaurant_image = restaurant.image_url
       rescue
-        restaurant_image = "http://i786.photobucket.com/albums/yy146/featherbrigade/cat-with-surprised-guilty-look.jpg"
+        restaurant_image = "default_cat.jpg"
       end
       restaurant_address = restaurant.location.display_address.join(", ")
       restaurant_rating = restaurant.rating
