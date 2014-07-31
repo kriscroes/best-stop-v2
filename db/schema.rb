@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20140731112050) do
     t.string   "rating"
     t.string   "rating_img_url"
     t.float    "distance"
+    t.float    "latitude"
+    t.float    "longitude"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

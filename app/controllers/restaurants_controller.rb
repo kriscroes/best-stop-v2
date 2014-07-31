@@ -3,7 +3,7 @@ class RestaurantsController < ApplicationController
 
   def yelp_search
     #destroy_all_persisted information for every request
-    #binding.pry
+  
     Restaurant.destroy_all
 
     lat = params[:lat]
@@ -12,6 +12,7 @@ class RestaurantsController < ApplicationController
     Restaurant.get_yelp(lat, lon)
 
     @restaurants = Restaurant.all
+
   end
 
   private
