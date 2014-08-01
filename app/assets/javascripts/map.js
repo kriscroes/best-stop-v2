@@ -116,6 +116,7 @@ $(function(){
       });
       bounds.extend(position);
       map.fitBounds(bounds);
+      //marker listener
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         console.log("Restaurant: " + restaurants[i][2]);
         return function() {
@@ -129,12 +130,22 @@ $(function(){
   }
   function restaurant_directions(restaurant){
 
+    if(directionsDisplay_to_restaurant != null){
+      directionsDisplay_to_restaurant.setMap(null);
+      directionsDisplay_to_restaurant = null;
+    }    
+
+    if(directionsDisplay_to_end != null){
+      directionsDisplay_to_end.setMap(null);
+      directionsDisplay_to_end = null;
+    }
+
     $("#directions-panel").html("");
     var start = $("#start").val(),
         end = $("#end").val();
  
  //add route from start to stop pos
-    route_1 = {
+    var route_1 = {
         origin: start,
         destination: restaurant,
         travelMode: google.maps.TravelMode.DRIVING
@@ -147,7 +158,7 @@ $(function(){
     });
  
        //add route from stop pos to selected restaurant
-    route_2 = {
+    var route_2 = {
         origin: restaurant,
         destination: end,
         travelMode: google.maps.TravelMode.DRIVING
