@@ -8,11 +8,11 @@ var directionsDisplay,
     stopPointLatLonObject,
     stopPointLat,
     stopPointLon,
-    check_done; 
+    check_done;
 
 $(function(){
 
-  function initialize() {
+  function createMap() {
     directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers:true});
 
     var mapOptions = {
@@ -28,9 +28,14 @@ $(function(){
     directionsDisplay.setMap(map);
 
     calcRoute(); //shows landing page/initial route
+  }
+
+  function initialize() {
+    createMap();
 
     $("#map_options").submit(function(event) {
       event.preventDefault();
+      createMap();
       removeMarkers();
       check_done = "not done";
       calcRoute();
@@ -123,13 +128,13 @@ $(function(){
     }
   }
   function restaurant_directions(restaurant){
-    polyline.setMap(null);
+
     $("#directions-panel").html("");
     var start = $("#start").val(),
         end = $("#end").val();
  
  //add route from start to stop pos
-    var route_1 = {
+    route_1 = {
         origin: start,
         destination: restaurant,
         travelMode: google.maps.TravelMode.DRIVING
@@ -142,7 +147,7 @@ $(function(){
     });
  
        //add route from stop pos to selected restaurant
-    var route_2 = {
+    route_2 = {
         origin: restaurant,
         destination: end,
         travelMode: google.maps.TravelMode.DRIVING

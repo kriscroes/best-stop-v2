@@ -20,7 +20,7 @@ after_validation :geocode, :if => :address_changed?
       begin
         restaurant_image = restaurant.image_url
       rescue
-        restaurant_image = "default_cat.jpg"
+        restaurant_image = "http://www.dressupgamesite.com/files/images/Puppy%20Pizza100X100.png"
       end
       restaurant_address = restaurant.location.display_address.join(", ")
       restaurant_rating = restaurant.rating
