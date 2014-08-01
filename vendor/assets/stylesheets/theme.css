@@ -400,7 +400,7 @@ blockquote {
   line-height: 70px;
 }
 .cbp-af-header h1 {
-  text-transform: uppercase;
+  /*text-transform: lowercase;*/
   color: white;
   letter-spacing: 4px;
   font-size: 2em;
@@ -429,7 +429,7 @@ blockquote {
   font-weight: 300;
   margin: 0 0 0 20px;
   font-size: 1em;
-  text-transform: uppercase;
+  /*text-transform: lowercase;*/
 }
 .cbp-af-header .nav a.signup {
   color: #88b7b3 !important;
