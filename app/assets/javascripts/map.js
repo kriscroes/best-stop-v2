@@ -1,13 +1,14 @@
-$(function(){
+var directionsDisplay;
+var directionsService = new google.maps.DirectionsService();
+var map;
+var marker;
+var markers = [];
+var stopPointLat,
+    stopPointLon,
+    check_done; 
 
-  var map;
-  var marker;
-  var markers = [];
-  var directionsDisplay;
-  var directionsService = new google.maps.DirectionsService(); 
-  var stopPointLat,
-      stopPointLon,
-      check_done;
+$(function(){
+  $("#restaurant_options").hide();
 
   function initialize() {
     directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers:true});
@@ -16,7 +17,7 @@ $(function(){
       zoom: 6,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    map = new google.maps.Map(document.getElementById("directions"), mapOptions);
+    map = new google.maps.Map(document.getElementById("map"), mapOptions);
     polyline = new google.maps.Polyline({
       path: [],
       strokeColor: '#FF0000',
@@ -28,13 +29,20 @@ $(function(){
 
     $("#map_options").submit(function(event) {
       event.preventDefault();
-      check_done = "not done";
+      //check_done = "not done";
       calcRoute();
-
-      check();
-      function check(){
-        if (check_done === "done"){
-        console.log("done!");
+      $("#restaurant_options").show();
+      console.log(stopPointLat);
+      console.log(stopPointLon);
+    });
+      
+    $("#restaurant_options").submit(function(event) {
+      event.preventDefault();
+      
+      //check();
+      // function check(){
+      //   if (check_done === "done"){
+        //console.log("done!");
           $.ajax({
              url:'/restaurants/yelp_search', 
              type: 'POST',
@@ -46,20 +54,17 @@ $(function(){
                'mtd=' + $("#mtd").val()
              )
           });
-        } else {
-          console.log("Are ya done yet???");
-          setTimeout(check, 1000);
-        }
-      }
-
-      console.log(stopPointLat);
-      console.log(stopPointLon);
+      //   } else {
+      //     console.log("Are ya done yet???");
+      //     setTimeout(check, 1000);
+      //   }
+      // }
     });
   }
   google.maps.event.addDomListener(window, "load", initialize);
+});
 
   function calcRoute() {
-    removeMarkers();
     var origin = $("#start").val(),
         destination = $("#end").val();
     // var origin = new google.maps.LatLng(41.850033, -87.6500523);
@@ -92,6 +97,26 @@ $(function(){
     markers.push(marker);
   }
 
+  function placeRestaurantMarkers(restaurants) {
+    var infowindow = new google.maps.InfoWindow();
+    console.log(restaurants[0][3]);
+    for (i = 0; i < restaurants.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(restaurants[i][0], restaurants[i][1]),
+        map: map,
+        zoom: 12,
+      });
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        console.log("Restaurant: " + restaurants[i][3])
+        return function() {
+          infowindow.setContent('Restaurant: ' + restaurants[i][3]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+
+  }
+
   function removeMarkers() {
     for (i = 0; i < markers.length; i++) {
       markers[i].setMap(null);
@@ -121,8 +146,5 @@ $(function(){
     placeMarker(stopPointLatLonObject);
     stopPointLat = stopPointLatLonObject["d"];
     stopPointLon = stopPointLatLonObject["e"];
-    check_done = "done";
-    console.log("check_done inside calcRoute: "+check_done);
   }
 
-});

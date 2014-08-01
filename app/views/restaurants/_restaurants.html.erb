@@ -9,8 +9,7 @@
         <%= image_tag restaurant.rating_img_url %></p>
         <p><%= restaurant.address %></p>
         <p><%= restaurant.distance %> miles </p>
-        <p><%= link_to restaurant.url, url_for(restaurant.url)%></p>
+        <p><a href="<%= restaurant.url %>" target="_blank"><%= restaurant.url %></a></p>
       <% end %>
-    
     <% end %>
   </div>

@@ -1,3 +1,7 @@
-$("#restaurants").remove();
-$("#yelp").append("<%=j render(:partial => 'restaurants') %>");
-
+console.log("You're in the yelp!");
+var restaurants = [];
+<% @restaurants.each do |restaurant| %>
+  var current_restaurant = [<%= restaurant.latitude %>, <%= restaurant.longitude %>];
+  restaurants.push(current_restaurant);
+<% end %>
+placeRestaurantMarkers(restaurants);
