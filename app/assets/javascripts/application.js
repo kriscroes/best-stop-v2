@@ -12,8 +12,23 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap
 //= require underscore
 //= require v3_epoly
 //= require map
+//= require bootstrap.min
+//= require cbpAnimatedHeader.min
+//= require classie
+//= require custom.js
+//= require imagesloaded.pkgd.min
+//= isotope.min
+//= jqBootstrapValidation.js
+//= jquery.flexsider-min
+//= jquery.magnific-popup.min
+//= jquery.mb.YTPLayer
+//= jquery.nav
+//= jquery.scrollTo
+//= owl.carousel.min
+//= scrollReveal
+//= require modernizr.custom
+//= require jquery.nav
 //= require_tree .

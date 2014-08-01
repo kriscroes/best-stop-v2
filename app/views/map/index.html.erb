@@ -1,33 +1,39 @@
-<div id="map_options">
-  <form>
-    Start: <input type="text" name="start" id="start" autocomplete="on" value="Chicago, IL"/>
-    End: <input type="text" name="end" id="end" autocomplete="on" value="New York, NY"/>
-    <br>Where in your route would you like to stop? 
-    <select id="stop_point">
-      <option value="25">1/4</option>
-      <option selected="selected" value="50">1/2</option>
-      <option value="75">3/4</option>
-    </select>
-    <br>How far away from your route would you like to deviate?
-    <select id="mtd">
-      <option value="1609">1</option>
-      <option selected="selected" value="8046">5</option>
-      <option value="16093">10</option>
-    </select> miles
-    <br>What are you looking for?<br>
-      <input type="radio" id="type" name="type" value="food">A quick bite
-      <input type="radio" id="type" name="type" value="restaurant">Something nicer<br>
-      <input type="radio" id="sort" name="sort" value="1">Closest
-      <input type="radio" id="sort" name="sort" value="2">Highest rated
-    <br><input type="submit" id="map_options_submit">
-  </form>
+<div class="container">
+
+<div id="about">
+
+  <div id="map_options">
+    <form>
+      <p>Start: <input type="text" name="start" id="start" autocomplete="on" value="Chicago, IL"/>
+      End: <input type="text" name="end" id="end" autocomplete="on" value="New York, NY"/></p>
+      <p>Where in your route would you like to stop?
+      <select id="stop_point">
+        <option value="25">1/4</option>
+        <option selected="selected" value="50">1/2</option>
+        <option value="75">3/4</option>
+      </select></p>
+      <p>How far away from your route would you like to deviate?
+      <select id="mtd">
+        <option value="1609">1</option>
+        <option selected="selected" value="8046">5</option>
+        <option value="16093">10</option>
+      </select> miles</p>
+      <p>What are you looking for?</p>
+        <p><input type="radio" id="type" name="type" value="food">  A quick bite     <input type="radio" id="type" name="type" value="restaurant">  Something nicer</p>
+        <p><input type="radio" id="sort" name="sort" value="1">  Closest     <input type="radio" id="sort" name="sort" value="2">  Highest rated</p>
+    <input class="btn btn-lg btn-primary" type="submit" id="map_options_submit">
+    </form>
+  </div>
+
 </div>
 
-<div style='width: 50%; float: left;'>
-  <div id="map" style='height: 400px;'></div>
-</div>
+
+  <div style='width: 65%; float: left;'>
+    <div id="map" style='height: 400px;'></div>
+  </div>
+
+  <div style='width: 33%; float: right;'>
+    <div id="directions-panel" style='height: 400px; overflow: scroll; background: white'></div>
+  </div>
 
 
-<div style='width: 50%; float: right; top: 300px;'>
-  <div id="directions-panel"></div>
-</div>
