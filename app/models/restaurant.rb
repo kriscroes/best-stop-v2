@@ -33,8 +33,6 @@ after_validation :geocode, :if => :address_changed?
 
       end
 
- 
-    
       Restaurant.create(name: restaurant_name,
                        address: restaurant_address,
                        image_url: restaurant_image,

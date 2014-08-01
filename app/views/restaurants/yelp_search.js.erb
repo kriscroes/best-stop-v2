@@ -1,6 +1,10 @@
-var restaurants = [];
-<% @restaurants.each do |restaurant| %>
-  var current_restaurant = [<%= restaurant.latitude %>, <%= restaurant.longitude %>, '<%= restaurant.name %>'];
-  restaurants.push(current_restaurant);
+<% if @restaurants.empty? %>
+  alert("No restaurants found. Please widen your search. (Replace this with Jesse photo in a modal.)");
+<% else %>
+  var restaurants = [];
+  <% @restaurants.each do |restaurant| %>
+    var current_restaurant = [<%= restaurant.latitude %>, <%= restaurant.longitude %>, '<%= restaurant.name %>'];
+    restaurants.push(current_restaurant);
+  <% end %>
 <% end %>
 placeRestaurantMarkers(restaurants);
