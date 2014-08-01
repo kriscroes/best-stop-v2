@@ -1,11 +1,11 @@
 var directionsDisplay,
     directionsDisplay_to_restaurant,
-    directionsDisplay_to_end;
-var directionsService = new google.maps.DirectionsService();
-var map;
-var marker;
-var markers = [];
-var stopPointLatLonObject,
+    directionsDisplay_to_end,
+    directionsService = new google.maps.DirectionsService(),
+    map,
+    marker,
+    markers = [],
+    stopPointLatLonObject,
     stopPointLat,
     stopPointLon,
     check_done; 
@@ -14,7 +14,7 @@ $(function(){
 
   function initialize() {
     directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers:true});
-    // var newYork = new google.maps.LatLng(40.7055, -74.0143);
+
     var mapOptions = {
       zoom: 6,
       mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -27,7 +27,7 @@ $(function(){
     });
     directionsDisplay.setMap(map);
 
-    calcRoute();
+    calcRoute(); //shows landing page/initial route
 
     $("#map_options").submit(function(event) {
       event.preventDefault();
@@ -39,7 +39,8 @@ $(function(){
       console.log(stopPointLon);
       
       check();
-      function check(){
+      function check(){ 
+      //makes sure ajax doesn't fire before calcRoute is finished
         if (check_done === "done"){
         console.log("done!");
           $.ajax({
@@ -61,19 +62,13 @@ $(function(){
       console.log("You clicked?");
     });
   }
-  // google.maps.event.addListener
-  // $("#container").on("click", marker, function(event){
-  //   event.preventDefault();
-  //   alert("here's where directions would pop up!");
-  // });
   google.maps.event.addDomListener(window, "load", initialize);
 });
 
   function calcRoute() {
     var origin = $("#start").val(),
         destination = $("#end").val();
-    // var origin = new google.maps.LatLng(41.850033, -87.6500523);
-    // var destination = new google.maps.LatLng(40.7055269, -74.014346);
+
     var request = {
         origin:      origin,
         destination: destination,
@@ -119,7 +114,7 @@ $(function(){
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         console.log("Restaurant: " + restaurants[i][2]);
         return function() {
-          infowindow.setContent('<img src="' + restaurants[i][3] + '"><p><strong>' + restaurants[i][2] + '</strong></p><p>Rating: ' + '  <img src="' + restaurants[i][5] + '"><p>' + restaurants[i][6] + '</p><p><button id="chosen_one">Sounds good! Bring me here!</button></p><p><a href="' + restaurants[i][7] + '" target="_blank">' + restaurants[i][7] + '</a></p>');
+          infowindow.setContent('<img src="' + restaurants[i][3] + '"><p><strong>' + restaurants[i][2] + '</strong></p><p>Rating: ' + '  <img src="' + restaurants[i][5] + '"><p>' + restaurants[i][6] + '</p><p><a href="' + restaurants[i][7] + '" target="_blank">' + restaurants[i][7] + '</a></p>');
           infowindow.open(map, marker);
           restaurant_directions(restaurants[i][6]);
         }
