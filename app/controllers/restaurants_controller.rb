@@ -13,7 +13,8 @@ class RestaurantsController < ApplicationController
     
     Restaurant.get_yelp(lat, lon, type, sort, mtd)
 
-    @restaurants = Restaurant.order("rating DESC")
+    # @restaurants = Restaurant.order("rating DESC")
+    @restaurants = Restaurant.all
   end
 
   private

@@ -3,7 +3,8 @@ var directionsService = new google.maps.DirectionsService();
 var map;
 var marker;
 var markers = [];
-var stopPointLat,
+var stopPointLatLonObject,
+    stopPointLat,
     stopPointLon,
     check_done; 
 
@@ -39,10 +40,10 @@ $(function(){
     $("#restaurant_options").submit(function(event) {
       event.preventDefault();
       
-      //check();
+      // check();
       // function check(){
       //   if (check_done === "done"){
-        //console.log("done!");
+      //   console.log("done!");
           $.ajax({
              url:'/restaurants/yelp_search', 
              type: 'POST',
@@ -59,6 +60,13 @@ $(function(){
       //     setTimeout(check, 1000);
       //   }
       // }
+      // console.log("You clicked?");
+      // var mapOptions = {
+      //   center: stopPointLatLonObject,
+      //   zoom: 12
+      // };
+      // map = new google.maps.Map(document.getElementById("map"), mapOptions);
+      // directionsDisplay.setMap(map);
     });
   }
   google.maps.event.addDomListener(window, "load", initialize);
@@ -99,17 +107,18 @@ $(function(){
 
   function placeRestaurantMarkers(restaurants) {
     var infowindow = new google.maps.InfoWindow();
-    console.log(restaurants[0][3]);
+    var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/purple-dot.png");
+
     for (i = 0; i < restaurants.length; i++) {  
       marker = new google.maps.Marker({
         position: new google.maps.LatLng(restaurants[i][0], restaurants[i][1]),
         map: map,
-        zoom: 12,
+        icon: icon
       });
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        console.log("Restaurant: " + restaurants[i][3])
+        console.log("Restaurant: " + restaurants[i][2])
         return function() {
-          infowindow.setContent('Restaurant: ' + restaurants[i][3]);
+          infowindow.setContent('Restaurant: ' + restaurants[i][2]);
           infowindow.open(map, marker);
         }
       })(marker, i));
@@ -142,7 +151,7 @@ $(function(){
             bounds.extend(nextSegment[k]);
           }
         }
-    var stopPointLatLonObject = polyline.GetPointAtDistance(distance);
+    stopPointLatLonObject = polyline.GetPointAtDistance(distance);
     placeMarker(stopPointLatLonObject);
     stopPointLat = stopPointLatLonObject["d"];
     stopPointLon = stopPointLatLonObject["e"];

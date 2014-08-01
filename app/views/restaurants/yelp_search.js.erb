@@ -1,7 +1,6 @@
-console.log("You're in the yelp!");
 var restaurants = [];
 <% @restaurants.each do |restaurant| %>
-  var current_restaurant = [<%= restaurant.latitude %>, <%= restaurant.longitude %>];
+  var current_restaurant = [<%= restaurant.latitude %>, <%= restaurant.longitude %>, '<%= restaurant.name %>'];
   restaurants.push(current_restaurant);
 <% end %>
 placeRestaurantMarkers(restaurants);
