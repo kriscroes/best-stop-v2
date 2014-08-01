@@ -11,6 +11,7 @@ var directionsDisplay,
     check_done;
 
 $(function(){
+  $("#directions-panel").hide();
 
   function createMap() {
     directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers:true});
@@ -38,8 +39,6 @@ $(function(){
       createMap();
       removeMarkers();
       check_done = "not done";
-      calcRoute();
-      $("#restaurant_options").show();
       console.log(stopPointLat);
       console.log(stopPointLon);
       
@@ -120,6 +119,7 @@ $(function(){
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         console.log("Restaurant: " + restaurants[i][2]);
         return function() {
+          $("#directions-panel").show();
           infowindow.setContent('<img src="' + restaurants[i][3] + '"><p><strong>' + restaurants[i][2] + '</strong></p><p>Rating: ' + '  <img src="' + restaurants[i][5] + '"><p>' + restaurants[i][6] + '</p><p><a href="' + restaurants[i][7] + '" target="_blank">' + restaurants[i][7] + '</a></p>');
           infowindow.open(map, marker);
           restaurant_directions(restaurants[i][6]);
