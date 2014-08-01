@@ -115,12 +115,14 @@ $(function(){
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         console.log("Restaurant: " + restaurants[i][2])
         return function() {
-          infowindow.setContent('Restaurant: ' + restaurants[i][2]);
+          infowindow.setContent('<img src="' + restaurants[i][3] + '"><p><strong>' + restaurants[i][2] + '</strong></p><p>Rating: ' + '  <img src="' + restaurants[i][5] + '"><p>' + restaurants[i][6] + '</p><p><a href="' + restaurants[i][7] + '" target="_blank">' + restaurants[i][7] + '</a></p>');
           infowindow.open(map, marker);
         }
       })(marker, i));
     }
   }
+
+  // 0<%= restaurant.latitude %>, 1<%= restaurant.longitude %>, 2'<%= restaurant.name %>', 3'<%= restaurant.image_url %>', 4<%= restaurant.rating %>, 5'<%= restaurant.rating_img_url %>', 6'<%= restaurant.address %>', 7'<%= restaurant.url %>'
 
   function removeMarkers() {
     for (i = 0; i < markers.length; i++) {
