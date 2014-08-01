@@ -30,19 +30,17 @@ $(function(){
 
     $("#map_options").submit(function(event) {
       event.preventDefault();
-      //check_done = "not done";
+      removeMarkers();
+      check_done = "not done";
       calcRoute();
       $("#restaurant_options").show();
       console.log(stopPointLat);
       console.log(stopPointLon);
-    });
       
-    $("#restaurant_options").submit(function(event) {
-      event.preventDefault();
-      // check();
-      // function check(){
-      //   if (check_done === "done"){
-      //   console.log("done!");
+      check();
+      function check(){
+        if (check_done === "done"){
+        console.log("done!");
           $.ajax({
              url:'/restaurants/yelp_search', 
              type: 'POST',
@@ -54,11 +52,11 @@ $(function(){
                'mtd=' + $("#mtd").val()
              )
           });
-      //   } else {
-      //     console.log("Are ya done yet???");
-      //     setTimeout(check, 1000);
-      //   }
-      // }
+        } else {
+          console.log("Are ya done yet???");
+          setTimeout(check, 1000);
+        }
+      }
       console.log("You clicked?");
     });
   }
@@ -119,6 +117,7 @@ $(function(){
           infowindow.open(map, marker);
         }
       })(marker, i));
+      markers.push(marker);
     }
   }
 
@@ -153,5 +152,6 @@ $(function(){
     placeMarker(stopPointLatLonObject);
     stopPointLat = stopPointLatLonObject["d"];
     stopPointLon = stopPointLatLonObject["e"];
+    check_done = "done";
   }
 
