@@ -1,4 +1,6 @@
-var directionsDisplay;
+var directionsDisplay,
+    directionsDisplay_to_restaurant,
+    directionsDisplay_to_end;
 var directionsService = new google.maps.DirectionsService();
 var map;
 var marker;
@@ -9,7 +11,6 @@ var stopPointLatLonObject,
     check_done; 
 
 $(function(){
-  $("#restaurant_options").hide();
 
   function initialize() {
     directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers:true});
@@ -60,6 +61,11 @@ $(function(){
       console.log("You clicked?");
     });
   }
+  // google.maps.event.addListener
+  // $("#container").on("click", marker, function(event){
+  //   event.preventDefault();
+  //   alert("here's where directions would pop up!");
+  // });
   google.maps.event.addDomListener(window, "load", initialize);
 });
 
@@ -111,16 +117,78 @@ $(function(){
       bounds.extend(position);
       map.fitBounds(bounds);
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        console.log("Restaurant: " + restaurants[i][2])
+        console.log("Restaurant: " + restaurants[i][2]);
         return function() {
-          infowindow.setContent('<img src="' + restaurants[i][3] + '"><p><strong>' + restaurants[i][2] + '</strong></p><p>Rating: ' + '  <img src="' + restaurants[i][5] + '"><p>' + restaurants[i][6] + '</p><p><a href="' + restaurants[i][7] + '" target="_blank">' + restaurants[i][7] + '</a></p>');
+          infowindow.setContent('<img src="' + restaurants[i][3] + '"><p><strong>' + restaurants[i][2] + '</strong></p><p>Rating: ' + '  <img src="' + restaurants[i][5] + '"><p>' + restaurants[i][6] + '</p><p><button id="chosen_one">Sounds good! Bring me here!</button></p><p><a href="' + restaurants[i][7] + '" target="_blank">' + restaurants[i][7] + '</a></p>');
           infowindow.open(map, marker);
+          restaurant_directions(restaurants[i][6]);
         }
       })(marker, i));
       markers.push(marker);
     }
   }
+  function restaurant_directions(restaurant){
+    polyline.setMap(null);
+    $("#directions-panel").html("");
+    var start = $("#start").val(),
+        end = $("#end").val();
+ 
+ //add route from start to stop pos
+    var route_1 = {
+        origin: start,
+        destination: restaurant,
+        travelMode: google.maps.TravelMode.DRIVING
+     };
+ 
+    directionsService.route(route_1, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay_to_restaurant.setDirections(response);
+      }
+    });
+ 
+       //add route from stop pos to selected restaurant
+    var route_2 = {
+        origin: restaurant,
+        destination: end,
+        travelMode: google.maps.TravelMode.DRIVING
+    };
 
+    directionsService.route(route_2, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay_to_end.setDirections(response);
+      }
+    });
+ 
+     // setting up direction renderer deviation route
+ 
+ 
+    directionsDisplay_to_restaurant = new google.maps.DirectionsRenderer({
+      map : map,
+      preserveViewport: true,
+      suppressMarkers : true,
+      polylineOptions : {strokeColor:'blue',
+                          strokeOpacity: .5,
+                          strokeWeight: 4
+                        }
+     });
+ 
+   
+    directionsDisplay_to_end = new google.maps.DirectionsRenderer({
+      map : map,
+      preserveViewport: true,
+      suppressMarkers : true,
+      polylineOptions : {strokeColor:'green',
+                          strokeOpacity: .7,
+                          strokeWeight: 4
+                        }
+     });
+ 
+     //set panel display
+     // directionsDisplay.setPanel(document.getElementById('directions-panel'));
+       // directionsDisplay_to_stop.setPanel(document.getElementById('directions-panel'));
+    directionsDisplay_to_restaurant.setPanel(document.getElementById('directions-panel'));
+    directionsDisplay_to_end.setPanel(document.getElementById('directions-panel'));
+  }
   // 0<%= restaurant.latitude %>, 1<%= restaurant.longitude %>, 2'<%= restaurant.name %>', 3'<%= restaurant.image_url %>', 4<%= restaurant.rating %>, 5'<%= restaurant.rating_img_url %>', 6'<%= restaurant.address %>', 7'<%= restaurant.url %>'
 
   function removeMarkers() {
