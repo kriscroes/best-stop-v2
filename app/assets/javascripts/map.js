@@ -39,7 +39,6 @@ $(function(){
       
     $("#restaurant_options").submit(function(event) {
       event.preventDefault();
-      
       // check();
       // function check(){
       //   if (check_done === "done"){
@@ -60,13 +59,7 @@ $(function(){
       //     setTimeout(check, 1000);
       //   }
       // }
-      // console.log("You clicked?");
-      // var mapOptions = {
-      //   center: stopPointLatLonObject,
-      //   zoom: 12
-      // };
-      // map = new google.maps.Map(document.getElementById("map"), mapOptions);
-      // directionsDisplay.setMap(map);
+      console.log("You clicked?");
     });
   }
   google.maps.event.addDomListener(window, "load", initialize);
@@ -108,13 +101,17 @@ $(function(){
   function placeRestaurantMarkers(restaurants) {
     var infowindow = new google.maps.InfoWindow();
     var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/purple-dot.png");
+    var bounds = new google.maps.LatLngBounds(stopPointLatLonObject);
 
     for (i = 0; i < restaurants.length; i++) {  
+      var position = new google.maps.LatLng(restaurants[i][0], restaurants[i][1])
       marker = new google.maps.Marker({
-        position: new google.maps.LatLng(restaurants[i][0], restaurants[i][1]),
+        position: position,
         map: map,
         icon: icon
       });
+      bounds.extend(position);
+      map.fitBounds(bounds);
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         console.log("Restaurant: " + restaurants[i][2])
         return function() {
@@ -123,7 +120,6 @@ $(function(){
         }
       })(marker, i));
     }
-
   }
 
   function removeMarkers() {
