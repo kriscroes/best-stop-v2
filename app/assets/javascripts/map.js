@@ -1,5 +1,12 @@
 $(function(){
 
+  
+  var directionsDisplay;
+
+  // added displays
+  var directionsDisplay_to_restaurant;
+  var directionsDisplay_to_end;
+  
   var map;
   var marker;
   var markers = [];
@@ -9,20 +16,101 @@ $(function(){
       stopPointLon,
       check_done;
 
+
+
+function restaurant_directions(restaurant) {
+
+
+      var origin = $("#start").val(),
+        destination = $("#end").val();
+
+//add route from start to stop pos
+      var route_1 = {
+          origin: origin,
+          destination: restaurant,
+          travelMode: google.maps.TravelMode.DRIVING
+        };
+
+        directionsService.route(route_1, function(response, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay_to_restaurant.setDirections(response);
+          }
+        });
+
+      //add route from stop pos to selected restaurant
+      var route_2 = {
+          origin: restaurant,
+          destination: destination,
+          travelMode: google.maps.TravelMode.DRIVING
+        };
+
+        directionsService.route(route_2, function(response, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay_to_end.setDirections(response);
+          }
+        });
+
+
+
+    // setting up direction renderer deviation route
+
+
+    directionsDisplay_to_restaurant = new google.maps.DirectionsRenderer({
+          map : map,
+          preserveViewport: true,
+           suppressMarkers : true,
+          polylineOptions : {strokeColor:'blue',
+                             strokeOpacity: .5,
+                             strokeWeight: 4
+                            }
+    });
+
+  
+    directionsDisplay_to_end = new google.maps.DirectionsRenderer({
+          map : map,
+          preserveViewport: true,
+           suppressMarkers : true,
+          polylineOptions : {strokeColor:'green',
+                             strokeOpacity: .7,
+                             strokeWeight: 4
+                            }
+    });
+
+
+
+
+
+    //set panel display
+    // directionsDisplay.setPanel(document.getElementById('directions-panel'));
+      // directionsDisplay_to_stop.setPanel(document.getElementById('directions-panel'));
+   directionsDisplay_to_restaurant.setPanel(document.getElementById('directions-panel'));
+   directionsDisplay_to_end.setPanel(document.getElementById('directions-panel'));
+
+
+}
+
+
+
+
   function initialize() {
+
+
     directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers:true});
     // var newYork = new google.maps.LatLng(40.7055, -74.0143);
     var mapOptions = {
       zoom: 6,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
+    
     map = new google.maps.Map(document.getElementById("directions"), mapOptions);
     polyline = new google.maps.Polyline({
       path: [],
       strokeColor: '#FF0000',
-      strokeWeight: 3
+      strokeWeight: 1
     });
     directionsDisplay.setMap(map);
+
+
 
     calcRoute();
 
@@ -76,12 +164,19 @@ $(function(){
         endLocation = response.routes[0].legs[0].end_location;
         //polyline.setMap(map);
         //marker.setMap(null);
+        
         placeMarker(startLocation);
         placeMarker(endLocation);
+        
         var $stopPoint = parseInt($("#stop_point").val());
         getStopPoint(response, $stopPoint);
+
       }
     });
+
+    restaurant_directions("3761 Main Street, Mineral Ridge, OH 44440, USA");
+
+
   }
 
   function placeMarker(location) {
