@@ -5,12 +5,13 @@ class RestaurantsController < ApplicationController
     #destroy_all_persisted information for every request
     Restaurant.destroy_all
 
-    sort = params[:sort]
+    type = "restaurants"
+    sort = params[:sort].to_i
     lat = params[:lat]
     lon = params[:lon]
     mtd = params[:mtd]
     
-    Restaurant.get_yelp(lat, lon, sort, mtd)
+    Restaurant.get_yelp(lat, lon, type, sort, mtd)
 
     # @restaurants = Restaurant.order("rating DESC")
     @restaurants = Restaurant.all

@@ -12,7 +12,7 @@ var directionsDisplay,
 
 $(function(){
   $("#directions-panel").hide();
-
+  $("#search_again_button").hide();
   function createMap() {
     directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers:true});
 
@@ -36,6 +36,9 @@ $(function(){
 
     $("#map_options").submit(function(event) {
       event.preventDefault();
+      $("#map_options").hide();
+      $("#blurb").hide();
+      $("#search_again_button").show();
       createMap();
       removeMarkers();
       check_done = "not done";
@@ -66,6 +69,14 @@ $(function(){
       console.log("You clicked?");
     });
   }
+    $("#search_again_button").click(function(event){
+      event.preventDefault();
+      $("#map_options").show();
+      $("#blurb").show();
+      $("#directions-panel").hide();
+      $("#search_again_button").hide();
+    });
+
   google.maps.event.addDomListener(window, "load", initialize);
 });
 
