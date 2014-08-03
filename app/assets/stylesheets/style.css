@@ -49,17 +49,13 @@ form > p {
 
 #map, #directions-panel {
   margin-top: 25px;
-  margin-bottom: 25px;
+  margin-bottom: 250px;
   border: 5px solid #333;
 }
 
 .navbar-wrapper {
   background: rgb(142, 142, 142); /* Fall-back for browsers that don't support rgba */
   background: rgba(142, 142, 142, .75);
-}
-
-.item {
-  padding-bottom: 35px;
 }
 
 .footer {
