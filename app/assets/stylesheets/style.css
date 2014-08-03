@@ -94,3 +94,7 @@ form > p {
 .infowindow > img {
   margin-bottom: 5px;
 }
+
+.pac-container:after{
+    content:none !important;
+}
