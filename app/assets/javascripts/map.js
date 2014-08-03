@@ -131,7 +131,7 @@ $(function(){
         console.log("Restaurant: " + restaurants[i][2]);
         return function() {
           $("#directions-panel").show();
-          infowindow.setContent('<img src="' + restaurants[i][3] + '"><p><strong>' + restaurants[i][2] + '</strong></p><p>Rating: ' + '  <img src="' + restaurants[i][5] + '"><p>' + restaurants[i][6] + '</p><p><a href="' + restaurants[i][7] + '" target="_blank">' + restaurants[i][7] + '</a></p>');
+          infowindow.setContent('<div class="infowindow"><img src="' + restaurants[i][3] + '"><p><strong>' + restaurants[i][2] + '</strong></p><p>Rating: ' + '  <img src="' + restaurants[i][5] + '"><p>' + restaurants[i][6] + '</p><p><a href="' + restaurants[i][7] + '" target="_blank">' + restaurants[i][7] + '</a></p></div>');
           infowindow.open(map, marker);
           restaurant_directions(restaurants[i][6]);
         }
@@ -182,8 +182,6 @@ $(function(){
     });
  
      // setting up direction renderer deviation route
- 
- 
     directionsDisplay_to_restaurant = new google.maps.DirectionsRenderer({
       map : map,
       preserveViewport: true,
@@ -193,8 +191,7 @@ $(function(){
                           strokeWeight: 4
                         }
      });
- 
-   
+
     directionsDisplay_to_end = new google.maps.DirectionsRenderer({
       map : map,
       preserveViewport: true,
@@ -206,8 +203,6 @@ $(function(){
      });
  
      //set panel display
-     // directionsDisplay.setPanel(document.getElementById('directions-panel'));
-       // directionsDisplay_to_stop.setPanel(document.getElementById('directions-panel'));
     directionsDisplay_to_restaurant.setPanel(document.getElementById('directions-panel'));
     directionsDisplay_to_end.setPanel(document.getElementById('directions-panel'));
   }
