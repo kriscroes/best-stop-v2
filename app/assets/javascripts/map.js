@@ -13,8 +13,9 @@ var directionsDisplay,
 $(function(){
   $("#directions-panel").hide();
   $("#search_again_button").hide();
+
   function createMap() {
-    directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers:true});
+    directionsDisplay = new google.maps.DirectionsRenderer();
 
     var mapOptions = {
       zoom: 6,
@@ -94,10 +95,7 @@ $(function(){
         directionsDisplay.setDirections(response);
         startLocation = response.routes[0].legs[0].start_location;
         endLocation = response.routes[0].legs[0].end_location;
-        //polyline.setMap(map);
-        //marker.setMap(null);
-        placeMarker(startLocation);
-        placeMarker(endLocation);
+
         var $stopPoint = parseInt($("#stop_point").val());
         getStopPoint(response, $stopPoint);
       }
@@ -126,6 +124,7 @@ $(function(){
       });
       bounds.extend(position);
       map.fitBounds(bounds);
+
       //marker listener
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         console.log("Restaurant: " + restaurants[i][2]);
