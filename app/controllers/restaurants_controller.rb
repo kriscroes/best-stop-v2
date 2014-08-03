@@ -5,7 +5,7 @@ class RestaurantsController < ApplicationController
     #destroy_all_persisted information for every request
     Restaurant.destroy_all
 
-    type = params[:type]
+    type = "restaurants"
     sort = params[:sort].to_i
     lat = params[:lat]
     lon = params[:lon]
