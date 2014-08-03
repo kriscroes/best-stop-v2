@@ -6,7 +6,7 @@ class RestaurantsController < ApplicationController
     Restaurant.destroy_all
 
     type = "restaurants"
-    sort = params[:sort].to_i
+    sort = params[:sort]
     lat = params[:lat]
     lon = params[:lon]
     mtd = params[:mtd]
