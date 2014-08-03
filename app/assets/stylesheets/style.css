@@ -74,3 +74,10 @@ form > p {
   color: #003366;
 }
 
+#blurb {
+  float: right;
+  font-family: "Waiting for the Sunrise", Helvetica, Arial, sans-serif;
+  font-size: 25px;
+  color: white;
+  margin-top: 25px;
+}
