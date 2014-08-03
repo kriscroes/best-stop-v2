@@ -73,6 +73,8 @@ $(function(){
       event.preventDefault();
       $("#map_options").show();
       $("#blurb").show();
+      $("#directions-panel").hide();
+      $("#search_again_button").hide();
     });
 
   google.maps.event.addDomListener(window, "load", initialize);
