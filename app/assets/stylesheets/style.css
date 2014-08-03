@@ -48,6 +48,7 @@ form > p {
 
 #map, #directions-panel {
   margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 .navbar-wrapper {
@@ -66,8 +67,8 @@ form > p {
   color: white;
   text-align: center;
   margin-top: 20px;
-  padding-top: 5px;
   padding-bottom: 5px;
+  padding-top: 5px;
 }
 
 .footer a {
