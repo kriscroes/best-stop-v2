@@ -33,6 +33,7 @@ $(function(){
 
   function initialize() {
     createMap();
+    autoComplete();
 
     $("#map_options").submit(function(event) {
       event.preventDefault();
@@ -234,3 +235,7 @@ $(function(){
     check_done = "done";
   }
 
+  function autoComplete() {
+     new google.maps.places.Autocomplete(document.getElementById('start'));
+     new google.maps.places.Autocomplete(document.getElementById('end'));
+  }

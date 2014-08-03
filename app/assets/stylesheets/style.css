@@ -73,4 +73,8 @@ form > p {
 .footer a {
   color: #003366;
 }
-
+ 
+    .pac-container:after{
+    content:none !important;
+}
+     
