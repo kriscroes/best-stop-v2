@@ -4,22 +4,18 @@
     <form>
       <p>Start: <input type="text" name="start" id="start" autocomplete="on" value="Chicago, IL"/>
       End: <input type="text" name="end" id="end" autocomplete="on" value="New York, NY"/></p>
-      <p>Where in your route would you like to stop?
-      <select id="stop_point">
-        <option value="25">1/4</option>
-        <option selected="selected" value="50">1/2</option>
-        <option value="75">3/4</option>
-      </select></p>
+      <p>How many hours in would you like to stop?
+      <input type="number" max="40" min="0.5" step="0.5" name="hours" id="stop_point" value="0.5"/> hour(s)<p>
       <p>How far away from your route would you like to deviate?
-      <select id="mtd">
-        <option value="1609">1</option>
+      <select id="mtd" class="input-lg" >
+        <p><option value="1609">1</option>
         <option selected="selected" value="8046">5</option>
-        <option value="16093">10</option>
+        <option value="16093">10</option></p>
       </select> miles</p>
       <p>What's important to you?
-      <input type="radio" id="sort" name="sort" value="1">  Closest     
-      <input type="radio" id="sort" name="sort" value="2">  Highest rated</p>
-    <input class="btn btn-lg btn-primary" type="submit" id="map_options_submit">
+      <input type="radio" id="sort" name="sort" value="1" class=".radio-inline">  Closest     
+      <input type="radio" id="sort" name="sort" value="2" class=".radio-inline">  Highest rated</p>
+      <input class="btn btn-lg btn-primary" type="submit" id="map_options_submit">
     </form>
   </div>
 

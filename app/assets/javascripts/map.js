@@ -23,31 +23,36 @@ $(function(){
     };
     map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
+    //setting up a google map with directions using the options above
     directionsDisplay.setMap(map);
 
-    calcRoute(); //shows landing page/initial route
+    calcRoute(); //sets route based on the start and end values in the form
   }
 
   function initialize() {
+    //initialize is called when the page loads
     createMap();
     autoComplete();
 
     $("#map_options").submit(function(event) {
       event.preventDefault();
+      // when button is clicked the form and blurb are hidden and search again button appears
       $("#map_options").hide();
       $("#blurb").hide();
       $("#search_again_button").show();
+
+      //a new map is loaded and old markers are removed
       createMap();
+      //calcRoute is called from within createMap
       removeMarkers();
+
       check_done = "not done";
-      console.log(stopPointLat);
-      console.log(stopPointLon);
-      
       check();
       function check(){ 
       //makes sure ajax doesn't fire before calcRoute is finished
         if (check_done === "done"){
         console.log("done!");
+          //info from form sent to restaurants controller
           $.ajax({
              url:'/restaurants/yelp_search', 
              type: 'POST',
@@ -68,6 +73,7 @@ $(function(){
     });
   }
     $("#search_again_button").click(function(event){
+      //form and blurb come back when search again button is clicked
       event.preventDefault();
       $("#map_options").show();
       $("#blurb").show();
@@ -87,16 +93,77 @@ $(function(){
         destination: destination,
         travelMode:  google.maps.TravelMode.DRIVING
     };
+    //a request for driving directions is made to google maps using the start and end values from the form
+
     directionsService.route(request, function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
+        //if directions come back      
         directionsDisplay.setDirections(response);
-        startLocation = response.routes[0].legs[0].start_location;
-        endLocation = response.routes[0].legs[0].end_location;
+        //set the directions on the map using the response
 
-        var $stopPoint = parseInt($("#stop_point").val());
+        // startLocation = response.routes[0].legs[0].start_location;
+        // endLocation = response.routes[0].legs[0].end_location;
+        // console.log(startLocation);
+        // console.log(endLocation);
+        console.log(response);
+
+        var $stopPoint = parseInt($("#stop_point").val())*3600;
         getStopPoint(response, $stopPoint);
       }
     });
+  }
+
+  function getStopPoint(response, percentage) {
+    var totalDist = response.routes[0].legs[0].distance.value,
+        //pulls the total distance out of the JSON response sent back by google
+
+        totalTime = response.routes[0].legs[0].duration.value,
+        //pulls the total distance out of the JSON response sent by google
+
+        distance = (percentage/totalTime) * totalDist,
+        //takes the hours in that they want to stop and converts that to the distance that must be traveled along the rout to find the stop point
+
+        //distance = (percentage/100) * totalDist,
+        //takes the percentage number from the form (25, 50 or 100) and converts it an actual percent to calculate the distance that must be traveled along the rout to find the stop point 
+
+        time = ((percentage/100) * totalTime/60).toFixed(2),
+
+        polyline = new google.maps.Polyline({
+          path: [],
+          //sets an empty path to start
+          strokeColor: 'rgba(0,0,0,0)',
+          strokeWeight: 1
+        });
+
+        var bounds = new google.maps.LatLngBounds();
+        //set the bounds of the map
+
+        var steps = response.routes[0].legs[0].steps;
+        //determines number of steps in the route
+
+        for (j=0; j<steps.length; j++) {
+          //iterates through each step in the route
+          var nextSegment = steps[j].path;
+          //gets the path for each segment
+          for (k=0; k<nextSegment.length; k++) {
+            //iterates through each portion of the path
+            //path is split up into segments designated by lat lon
+            polyline.getPath().push(nextSegment[k]);
+            //pushes each portion of the path onto polyline path
+            bounds.extend(nextSegment[k]);
+            //increase bounds to encompass entire route
+          }
+        }
+    stopPointLatLonObject = polyline.GetPointAtDistance(distance);
+    //uses epoly function to determine the stop point along the polyline
+
+    placeMarker(stopPointLatLonObject);
+    //places marker at stop point
+
+    console.log(stopPointLatLonObject);
+    stopPointLat = stopPointLatLonObject["d"];
+    stopPointLon = stopPointLatLonObject["e"];
+    check_done = "done";
   }
 
   function placeMarker(location) {
@@ -109,87 +176,108 @@ $(function(){
 
   function placeRestaurantMarkers(restaurants) {
     var infowindow = new google.maps.InfoWindow();
+    //sets up a new info window object
+
     var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/purple-dot.png");
+    //sets pins to the purple icon
+
     var bounds = new google.maps.LatLngBounds(stopPointLatLonObject);
+    //sets the center of map bounds based on the stopping point
 
     for (i = 0; i < restaurants.length; i++) {  
-      var position = new google.maps.LatLng(restaurants[i][0], restaurants[i][1])
+      //iterates through the list of restaurant options
+
+      var position = new google.maps.LatLng(restaurants[i][0], restaurants[i][1]);
+      //determines position for pin based on restaurant lat/lon
+      
       marker = new google.maps.Marker({
         position: position,
         map: map,
         icon: icon
       });
-      bounds.extend(position);
-      map.fitBounds(bounds);
+      //places new google marker onto map in that position
 
-      //marker listener
+      bounds.extend(position);
+      //extends bounds of the map to display the pin
+      map.fitBounds(bounds);
+      //fits the map to those bounds
+      //acts as a zoom
+
+      //sets click listener for marker
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         console.log("Restaurant: " + restaurants[i][2]);
+        //when clicked...
         return function() {
           $("#directions-panel").show();
-          infowindow.setContent('<div class="infowindow"><img src="' + restaurants[i][3] + '"><p><strong>' + restaurants[i][2] + '</strong></p><p>Rating: ' + '  <img src="' + restaurants[i][5] + '"><p>' + restaurants[i][6] + '</p><p><a href="' + restaurants[i][7] + '" target="_blank">' + restaurants[i][7] + '</a></p></div>');
+          infowindow.setContent('<div class="infowindow"><div class="row"><div class="col-xs-3"><img src="' + restaurants[i][3] + '"></div><div class="col-xs-8 col-xs-offset-1"><p><strong>' + restaurants[i][2] + '</strong></p><p>Rating: ' + '  <img src="' + restaurants[i][5] + '"></p><p>' + restaurants[i][6] + '</p></div></div><div class="row"><div class="col-xs-12"><p><a href="' + restaurants[i][7] + '" target="_blank">' + restaurants[i][7] + '</a></p></div></div>');
+          //content of info window is set
           infowindow.open(map, marker);
+          //info window pops up
           restaurant_directions(restaurants[i][6]);
+          //directions to and from the restaurant are listed and displayed on the map
         }
       })(marker, i));
       markers.push(marker);
     }
   }
-  // 0<%= restaurant.latitude %>, 1<%= restaurant.longitude %>, 2'<%= restaurant.name %>', 3'<%= restaurant.image_url %>', 4<%= restaurant.rating %>, 5'<%= restaurant.rating_img_url %>', 6'<%= restaurant.address %>', 7'<%= restaurant.url %>'
+  //Info being passed in via 'restaurants'
+  //0<%= restaurant.latitude %>, 1<%= restaurant.longitude %>, 2'<%= restaurant.name %>', 3'<%= restaurant.image_url %>', 4<%= restaurant.rating %>, 5'<%= restaurant.rating_img_url %>', 6'<%= restaurant.address %>', 7'<%= restaurant.url %>'
 
   function restaurant_directions(restaurant){
-
     if(directionsDisplay_to_restaurant != null){
       directionsDisplay_to_restaurant.setMap(null);
       directionsDisplay_to_restaurant = null;
     }    
-
     if(directionsDisplay_to_end != null){
       directionsDisplay_to_end.setMap(null);
       directionsDisplay_to_end = null;
     }
+    //deletes any previous routes on the map
 
     $("#directions-panel").html("");
+    //deletes previous directions displayed on the screen
+
     var start = $("#start").val(),
         end = $("#end").val();
+    //sets start and finish values
  
-    //add route from start to stop pos
+    //set route info from start to chosen restaurant
     var route_1 = {
         origin: start,
         destination: restaurant,
         travelMode: google.maps.TravelMode.DRIVING
      };
- 
+    //sends route info to google and recieves directions
     directionsService.route(route_1, function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
         directionsDisplay_to_restaurant.setDirections(response);
       }
     });
  
-    //add route from stop pos to selected restaurant
+    //set route info from selected restaurant to destination
     var route_2 = {
         origin: restaurant,
         destination: end,
         travelMode: google.maps.TravelMode.DRIVING
     };
-
+    //sends route info to google and recieves directions
     directionsService.route(route_2, function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
         directionsDisplay_to_end.setDirections(response);
       }
     });
  
-    // setting up direction renderer deviation route
+    //displays route to restaurant on map
     directionsDisplay_to_restaurant = new google.maps.DirectionsRenderer({
       map : map,
       preserveViewport: true,
       suppressMarkers : true,
-      polylineOptions : {strokeColor:'blue',
+      polylineOptions : { strokeColor:'blue',
                           strokeOpacity: .5,
                           strokeWeight: 4
                         }
      });
-
+    //displays route from restaurant to destination on map
     directionsDisplay_to_end = new google.maps.DirectionsRenderer({
       map : map,
       preserveViewport: true,
@@ -200,7 +288,7 @@ $(function(){
                         }
      });
  
-    //set panel display
+    //set panel displays with printed directions
     directionsDisplay_to_restaurant.setPanel(document.getElementById('directions-panel'));
     directionsDisplay_to_end.setPanel(document.getElementById('directions-panel'));
   }
@@ -209,32 +297,6 @@ $(function(){
     for (i = 0; i < markers.length; i++) {
       markers[i].setMap(null);
     }
-  }
-
-  function getStopPoint(response, percentage) {
-    var totalDist = response.routes[0].legs[0].distance.value,
-        totalTime = response.routes[0].legs[0].duration.value,
-        distance = (percentage/100) * totalDist,
-        time = ((percentage/100) * totalTime/60).toFixed(2),
-        polyline = new google.maps.Polyline({
-          path: [],
-          strokeColor: '#FF0000',
-          strokeWeight: 3
-        });
-        var bounds = new google.maps.LatLngBounds();
-        var steps = response.routes[0].legs[0].steps;
-        for (j=0; j<steps.length; j++) {
-          var nextSegment = steps[j].path;
-          for (k=0; k<nextSegment.length; k++) {
-            polyline.getPath().push(nextSegment[k]);
-            bounds.extend(nextSegment[k]);
-          }
-        }
-    stopPointLatLonObject = polyline.GetPointAtDistance(distance);
-    placeMarker(stopPointLatLonObject);
-    stopPointLat = stopPointLatLonObject["d"];
-    stopPointLon = stopPointLatLonObject["e"];
-    check_done = "done";
   }
 
   function autoComplete() {
