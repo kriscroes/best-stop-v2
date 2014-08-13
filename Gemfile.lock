@@ -70,6 +70,9 @@ GEM
     faraday_middleware (0.9.1)
       faraday (>= 0.7.4, < 0.10)
     ffi (1.9.3)
+    figaro (0.7.0)
+      bundler (~> 1.0)
+      rails (>= 3, < 5)
     formatador (0.2.5)
     geocoder (1.2.3)
     google-analytics-rails (0.0.6)
@@ -231,6 +234,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   database_cleaner
   factory_girl_rails
+  figaro
   geocoder
   google-analytics-rails
   guard-rspec
