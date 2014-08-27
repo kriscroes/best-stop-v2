@@ -25,6 +25,11 @@
   color: black;
 }
 
+input {
+  border-radius: 5px;
+  padding-left: 7px;
+}
+
 #map_options {
   padding-top: 25px;
 }
@@ -194,3 +199,4 @@ select.input-lg {
   height: 40px !important;
   line-height: 40px !important;
 }
+

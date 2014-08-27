@@ -20,7 +20,6 @@ class RestaurantsController < ApplicationController
 
     # @restaurants = Restaurant.order("rating DESC")
     @restaurants = Restaurant.all
-    # binding.pry
     # yelp_search.js is called at this point
     # placeRestaurantMarkers(restaurants) function drops pins for each restaurant on map
   end
