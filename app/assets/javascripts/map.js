@@ -5,6 +5,7 @@ var directionsDisplay,
     map,
     marker,
     markers = [],
+    select,
     stopPointLatLonObject,
     stopPointLat,
     stopPointLon,
@@ -13,6 +14,18 @@ var directionsDisplay,
 $(function(){
   $("#directions-panel").hide();
   $("#search_again_button").hide();
+  $("#stop_point_miles").hide();
+
+  $("#method" ).change(function() {
+    $("#stop_point_miles").hide();
+    $("#stop_point_hours").hide();
+    $( "#method option:selected" ).each(function() {
+      select = "#stop_point_" + $(this).text();
+    });
+    $(select).show();
+  })
+  .trigger("change" );
+  //when user selects miles or hours the appropriate input box shows up
 
   function createMap() {
     directionsDisplay = new google.maps.DirectionsRenderer();
@@ -52,6 +65,8 @@ $(function(){
       //makes sure ajax doesn't fire before calcRoute is finished
         if (check_done === "done"){
         console.log("done!");
+        console.log(stopPointLat);
+        console.log(stopPointLon);
           //info from form sent to restaurants controller
           $.ajax({
              url:'/restaurants/yelp_search', 
@@ -107,26 +122,23 @@ $(function(){
         // console.log(endLocation);
         console.log(response);
 
-        var $stopPoint = parseInt($("#stop_point").val())*3600;
-        getStopPoint(response, $stopPoint);
+        var method = $("#method").val();
+        //users choice of hours or miles determines whether the stop point will be calculated the via distance or time method
+        var stopPoint = parseInt($(select).val());
+        //this is the value in either miles or or hours
+        console.log(method);
+        console.log(stopPoint);
+        getStopPoint(response, stopPoint, method);
       }
     });
   }
 
-  function getStopPoint(response, percentage) {
+  function getStopPoint(response, stop, method) {
     var totalDist = response.routes[0].legs[0].distance.value,
         //pulls the total distance out of the JSON response sent back by google
 
         totalTime = response.routes[0].legs[0].duration.value,
-        //pulls the total distance out of the JSON response sent by google
-
-        distance = (percentage/totalTime) * totalDist,
-        //takes the hours in that they want to stop and converts that to the distance that must be traveled along the rout to find the stop point
-
-        //distance = (percentage/100) * totalDist,
-        //takes the percentage number from the form (25, 50 or 100) and converts it an actual percent to calculate the distance that must be traveled along the rout to find the stop point 
-
-        time = ((percentage/100) * totalTime/60).toFixed(2),
+        //pulls the total time out of the JSON response sent by google
 
         polyline = new google.maps.Polyline({
           path: [],
@@ -135,34 +147,52 @@ $(function(){
           strokeWeight: 1
         });
 
-        var bounds = new google.maps.LatLngBounds();
-        //set the bounds of the map
+    var distance;
+    var time;
+    if (method == "hours") {
+      distance = ((stop*3600)/totalTime) * totalDist;
+      //takes the requested hours into the trip that the user wants to stop and converts that to the distance that must be traveled along the route to find the stop point 
+    } else if (method == "miles") {
+      distance = stop*1609.34;
+      //takes the miles in that the person wants to stop and converts it to meters 
+      time = ((stop/totalDist) * totalTime/60).toFixed(2);
+    }
+    if (distance > totalDist) {
+      alert("Your trip will take about " + (totalTime/3600).toFixed(0) + " hours to travel " + (totalDist*0.000621371).toFixed(0) + " miles. Please chose a stopping point within that time frame or distance.");
+    }
+    //alert in case the user tries to pick a stopping point outside the bounds of the trip
+    console.log(distance);
+    console.log(time);
 
-        var steps = response.routes[0].legs[0].steps;
-        //determines number of steps in the route
+    var bounds = new google.maps.LatLngBounds();
+    //set the bounds of the map
 
-        for (j=0; j<steps.length; j++) {
-          //iterates through each step in the route
-          var nextSegment = steps[j].path;
-          //gets the path for each segment
-          for (k=0; k<nextSegment.length; k++) {
-            //iterates through each portion of the path
-            //path is split up into segments designated by lat lon
-            polyline.getPath().push(nextSegment[k]);
-            //pushes each portion of the path onto polyline path
-            bounds.extend(nextSegment[k]);
-            //increase bounds to encompass entire route
-          }
-        }
+    var steps = response.routes[0].legs[0].steps;
+    //determines number of steps in the route
+
+    for (j=0; j<steps.length; j++) {
+      //iterates through each step in the route
+      var nextSegment = steps[j].path;
+      //gets the path for each segment
+      for (k=0; k<nextSegment.length; k++) {
+        //iterates through each portion of the path
+        //path is split up into segments designated by lat lon
+        polyline.getPath().push(nextSegment[k]);
+        //pushes each portion of the path onto polyline path
+        bounds.extend(nextSegment[k]);
+        //increase bounds to encompass entire route
+      }
+    }
+
     stopPointLatLonObject = polyline.GetPointAtDistance(distance);
-    //uses epoly function to determine the stop point along the polyline
+    //uses epoly function to determine the appropriate stop point along the route given the distance calculated from user's choice (in miles or hours)
 
     placeMarker(stopPointLatLonObject);
     //places marker at stop point
 
     console.log(stopPointLatLonObject);
-    stopPointLat = stopPointLatLonObject["d"];
-    stopPointLon = stopPointLatLonObject["e"];
+    stopPointLat = stopPointLatLonObject["k"];
+    stopPointLon = stopPointLatLonObject["A"];
     check_done = "done";
   }
 
@@ -247,7 +277,7 @@ $(function(){
         destination: restaurant,
         travelMode: google.maps.TravelMode.DRIVING
      };
-    //sends route info to google and recieves directions
+    //sends route info to google and receives directions
     directionsService.route(route_1, function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
         directionsDisplay_to_restaurant.setDirections(response);
@@ -260,7 +290,7 @@ $(function(){
         destination: end,
         travelMode: google.maps.TravelMode.DRIVING
     };
-    //sends route info to google and recieves directions
+    //sends route info to google and receives directions
     directionsService.route(route_2, function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
         directionsDisplay_to_end.setDirections(response);
@@ -288,7 +318,7 @@ $(function(){
                         }
      });
  
-    //set panel displays with printed directions
+    //set panel displays with step-by-step directions
     directionsDisplay_to_restaurant.setPanel(document.getElementById('directions-panel'));
     directionsDisplay_to_end.setPanel(document.getElementById('directions-panel'));
   }

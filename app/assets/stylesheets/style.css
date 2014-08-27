@@ -42,6 +42,10 @@ form > p {
   font-size: 18px;
 }
 
+input > p {
+  black
+}
+
 #map, #directions-panel {
   margin-top: 25px;
   margin-bottom: 400px;

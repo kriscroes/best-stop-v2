@@ -2,10 +2,16 @@
 
   <div id="map_options" class="col-xs-12 col-md-7 col-lg-6">
     <form>
-      <p>Start: <input type="text" name="start" id="start" autocomplete="on" value="Chicago, IL"/>
+      <p>Start: <input type="text" name="start" id="start" autocomplete="on" value="Pittsburgh, PA"/>
       End: <input type="text" name="end" id="end" autocomplete="on" value="New York, NY"/></p>
-      <p>How many hours in would you like to stop?
-      <input type="number" max="40" min="0.5" step="0.5" name="hours" id="stop_point" value="0.5"/> hour(s)<p>
+      <p>How many
+        <select id="method" class="input-lg" style="color:black" >
+          <p><option value="hours">hours</option>
+          <option value="miles">miles</option></p>
+        </select>
+        in would you like to stop?
+        <input style="color:black" type="number" max="40" min="0.5" step="0.5" name="hours" id="stop_point_hours" value="3.5"/>
+        <input style="color:black" type="number" max="3000" min="0" step="25" name="miles" id="stop_point_miles" value="100"/>
       <p>How far away from your route would you like to deviate?
       <select id="mtd" class="input-lg" >
         <p><option value="1609">1</option>

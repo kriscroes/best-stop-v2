@@ -13,7 +13,7 @@ class Restaurant < ActiveRecord::Base
 
     #searching
     search = Yelp.client.search_by_coordinates(coordinates, params, locale) 
-
+    
     search.businesses.each do |restaurant|
       restaurant_name = restaurant.name
       begin
