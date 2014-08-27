@@ -5,16 +5,24 @@ class RestaurantsController < ApplicationController
     #destroy_all_persisted information for every request
     Restaurant.destroy_all
 
+    # params below sent from form via ajax
     type = "restaurants"
     sort = params[:sort]
+    # highest rated or closest as designated on form
     lat = params[:lat]
     lon = params[:lon]
+    # as calculated by getStopPoint function
     mtd = params[:mtd]
+    # how far the user is willing to travel from route
     
+    # call to Yelp API
     Restaurant.get_yelp(lat, lon, type, sort, mtd)
 
     # @restaurants = Restaurant.order("rating DESC")
     @restaurants = Restaurant.all
+    # binding.pry
+    # yelp_search.js is called at this point
+    # placeRestaurantMarkers(restaurants) function drops pins for each restaurant on map
   end
 
   private
