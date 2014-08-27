@@ -48,7 +48,7 @@ form > p {
 }
 
 input > p {
-  black
+  black;
 }
 
 #map, #directions-panel {
