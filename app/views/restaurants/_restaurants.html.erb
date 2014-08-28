@@ -1,3 +1,6 @@
+<!-- No longer using this partial to display restaurant list.
+Restaurant info sent directly to placeRestaurantMarkers(restaurants) via yelp_search.js and pins are dropped on map. -->
+
   <div id="restaurants" style='height: 400px;'>
     <% if @restaurants.empty? %>
       <%= image_tag("jesse.jpg", :alt => "There are no restaurants fitting your search criteria. Please widen your search.") %>
