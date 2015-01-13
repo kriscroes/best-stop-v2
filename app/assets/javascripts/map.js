@@ -146,6 +146,8 @@ $(function(){
           strokeColor: 'rgba(0,0,0,0)',
           strokeWeight: 1
         });
+    console.log("totalTime " + totalTime);
+    console.log("totalDist " + totalDist);
 
     var distance;
     var time;
@@ -161,8 +163,7 @@ $(function(){
       alert("Your trip will take about " + (totalTime/3600).toFixed(0) + " hours to travel " + (totalDist*0.000621371).toFixed(0) + " miles. Please chose a stopping point within that time frame or distance.");
     }
     //alert in case the user tries to pick a stopping point outside the bounds of the trip
-    console.log(distance);
-    console.log(time);
+    //console.log("Distance " + distance);
 
     var bounds = new google.maps.LatLngBounds();
     //set the bounds of the map
@@ -192,8 +193,10 @@ $(function(){
 
     console.log(stopPointLatLonObject);
     stopPointLat = stopPointLatLonObject["k"];
-    stopPointLon = stopPointLatLonObject["A"];
+    stopPointLon = stopPointLatLonObject["C"];
     check_done = "done";
+    console.log("stopPointLat " + stopPointLat);
+    console.log("stopPointLon " + stopPointLon);
   }
 
   function placeMarker(location) {
