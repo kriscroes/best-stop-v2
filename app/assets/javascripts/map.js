@@ -192,7 +192,7 @@ $(function(){
 
     console.log(stopPointLatLonObject);
     stopPointLat = stopPointLatLonObject["k"];
-    stopPointLon = stopPointLatLonObject["A"];
+    stopPointLon = stopPointLatLonObject["D"];
     check_done = "done";
   }
 

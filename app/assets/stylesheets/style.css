@@ -62,14 +62,14 @@ input > p {
 }
 
 .navbar-wrapper {
-  background: rgb(142, 142, 142); /* Fall-back for browsers that don't support rgba */
-  background: rgba(142, 142, 142, .75);
+  background: rgb(128, 128, 128); /* Fall-back for browsers that don't support rgba */
+  background: rgba(128, 128, 128, .90);
 }
 
 .footer {
   font-family: "Waiting for the Sunrise", Helvetica, Arial, sans-serif;
   font-size: 20px;
-  background-color: rgb(142, 142, 142);
+  background-color: rgba(128, 128, 128, 1);
   color: white;
   text-align: center;
   margin-top: 20px;
@@ -81,11 +81,11 @@ input > p {
 }
 
 .footer a {
-  color: #003366;
+  color: rgb(100, 180, 200);
 }
 
 #blurb {
-  font-family: "Waiting for the Sunrise", Helvetica, Arial, sans-serif;
+  font-family: "Dosis", Helvetica, Arial, sans-serif;
   font-size: 25px;
   color: white;
   margin-top: 25px;
@@ -198,5 +198,9 @@ select[multiple].input-sm {
 select.input-lg {
   height: 40px !important;
   line-height: 40px !important;
+}
+
+#map_options_submit {
+  background-color: rgb(128, 128, 128);
 }
 
