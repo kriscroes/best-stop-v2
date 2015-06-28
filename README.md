@@ -1,4 +1,4 @@
-# Best Stop V2
+## Best Stop
 
 Go on a lot of road trips?
 Ever get sick of horrible rest stop food?
