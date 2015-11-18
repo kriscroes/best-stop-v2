@@ -61,7 +61,7 @@ $(function(){
 
       check_done = "not done";
       check();
-      function check(){ 
+      function check(){
       //makes sure ajax doesn't fire before calcRoute is finished
         if (check_done === "done"){
         console.log("done!");
@@ -69,7 +69,7 @@ $(function(){
         console.log(stopPointLon);
           //info from form sent to restaurants controller
           $.ajax({
-             url:'/restaurants/yelp_search', 
+             url:'/restaurants/yelp_search',
              type: 'POST',
              data:(
                'lat=' + stopPointLat + '&' +
@@ -112,7 +112,7 @@ $(function(){
 
     directionsService.route(request, function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
-        //if directions come back      
+        //if directions come back
         directionsDisplay.setDirections(response);
         //set the directions on the map using the response
 
@@ -153,10 +153,10 @@ $(function(){
     var time;
     if (method == "hours") {
       distance = ((stop*3600)/totalTime) * totalDist;
-      //takes the requested hours into the trip that the user wants to stop and converts that to the distance that must be traveled along the route to find the stop point 
+      //takes the requested hours into the trip that the user wants to stop and converts that to the distance that must be traveled along the route to find the stop point
     } else if (method == "miles") {
       distance = stop*1609.34;
-      //takes the miles in that the person wants to stop and converts it to meters 
+      //takes the miles in that the person wants to stop and converts it to meters
       time = ((stop/totalDist) * totalTime/60).toFixed(2);
     }
     if (distance > totalDist) {
@@ -187,11 +187,9 @@ $(function(){
 
     stopPointLatLonObject = polyline.GetPointAtDistance(distance);
     //uses epoly function to determine the appropriate stop point along the route given the distance calculated from user's choice (in miles or hours)
-
     placeMarker(stopPointLatLonObject);
     //places marker at stop point
 
-    console.log(stopPointLatLonObject);
     stopPointLat = stopPointLatLonObject["k"];
     stopPointLon = stopPointLatLonObject["D"];
     check_done = "done";
@@ -217,12 +215,12 @@ $(function(){
     var bounds = new google.maps.LatLngBounds(stopPointLatLonObject);
     //sets the center of map bounds based on the stopping point
 
-    for (i = 0; i < restaurants.length; i++) {  
+    for (i = 0; i < restaurants.length; i++) {
       //iterates through the list of restaurant options
 
       var position = new google.maps.LatLng(restaurants[i][0], restaurants[i][1]);
       //determines position for pin based on restaurant lat/lon
-      
+
       marker = new google.maps.Marker({
         position: position,
         map: map,
@@ -260,7 +258,7 @@ $(function(){
     if(directionsDisplay_to_restaurant != null){
       directionsDisplay_to_restaurant.setMap(null);
       directionsDisplay_to_restaurant = null;
-    }    
+    }
     if(directionsDisplay_to_end != null){
       directionsDisplay_to_end.setMap(null);
       directionsDisplay_to_end = null;
@@ -273,7 +271,7 @@ $(function(){
     var start = $("#start").val(),
         end = $("#end").val();
     //sets start and finish values
- 
+
     //set route info from start to chosen restaurant
     var route_1 = {
         origin: start,
@@ -286,7 +284,7 @@ $(function(){
         directionsDisplay_to_restaurant.setDirections(response);
       }
     });
- 
+
     //set route info from selected restaurant to destination
     var route_2 = {
         origin: restaurant,
@@ -299,7 +297,7 @@ $(function(){
         directionsDisplay_to_end.setDirections(response);
       }
     });
- 
+
     //displays route to restaurant on map
     directionsDisplay_to_restaurant = new google.maps.DirectionsRenderer({
       map : map,
@@ -320,7 +318,7 @@ $(function(){
                           strokeWeight: 4
                         }
      });
- 
+
     //set panel displays with step-by-step directions
     directionsDisplay_to_restaurant.setPanel(document.getElementById('directions-panel'));
     directionsDisplay_to_end.setPanel(document.getElementById('directions-panel'));
