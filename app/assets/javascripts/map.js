@@ -190,8 +190,8 @@ $(function(){
     placeMarker(stopPointLatLonObject);
     //places marker at stop point
 
-    stopPointLat = stopPointLatLonObject["k"];
-    stopPointLon = stopPointLatLonObject["D"];
+    stopPointLat = stopPointLatLonObject["G"];
+    stopPointLon = stopPointLatLonObject["K"];
     check_done = "done";
     console.log("stopPointLat " + stopPointLat);
     console.log("stopPointLon " + stopPointLon);
